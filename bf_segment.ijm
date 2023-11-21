@@ -115,6 +115,7 @@
 				"Double-click any blue ROI and press the Delete key to delete it.\n"+
 				"To refresh view, click elsewhere.\n"+
 				"Draw an ROI manually and add it by pressing 't'.\n"+
+				"Do not draw overlapping ROIs because the area will be counted twice.\n"+
 				"To delete all ROIs, select all the lines in the ROI Manager window, and press Delete.\n"+
 				"When finished, press OK.");
 
