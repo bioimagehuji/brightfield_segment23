@@ -1,4 +1,4 @@
-// Liver Cell Segmentation. Version 3.
+// Liver Cell Segmentation. Version 4.
 // Script description:
 //  This script computes the fluorescence inside cells.
 //  The script accepts a brightfield image and a fluorescence image. 
@@ -9,6 +9,7 @@
 // Output: a sub-fulder with files: mask.png, results.csv, and fluorescence_sum.txt
 //         The Log window shows sum_ratio.
 //
+// Changes in V.4: Tile. Print sum and file in new lines. Green ROIs.
 // Changes in V.3: Added threshold control. Show segmentation with fluorescence.
 // Changes in V.2: Added line to user dialog box.
 
@@ -61,7 +62,9 @@
 	open(bf_filename);
 	rename("bf_orig");
 	run("Duplicate...", "title=bf_nobg");
-
+	// run("Subtract Background...", "rolling=1 light sliding");
+	// run("Enhance Contrast...", "saturated=0.35");
+	close("bf_orig");
 
 // Segment
 	selectImage("bf_nobg");
@@ -72,7 +75,10 @@
 	// An alternative segmentation method
 
 	setMinAndMax(0, 3000);
+	run("Tile");
+	selectImage("bf_edges");
 	run("Threshold...");
+	call("ij.plugin.frame.ThresholdAdjuster.setMode", "Red");
 	setAutoThreshold("Otsu dark no-reset");
 	waitForUser(
 		"Cell segmentaion", "Adjust the red area by dragging the upper scroll-bar in the Thrteshold window.\n" +
@@ -112,7 +118,7 @@
 	roiManager("Show All without labels");
 	selectWindow("ROI Manager");
 	waitForUser("FIJI", 
-				"Double-click any blue ROI and press the Delete key to delete it.\n"+
+				"Double-click any green ROI and press the Delete key to delete it.\n"+
 				"To refresh view, click elsewhere.\n"+
 				"Draw an ROI manually and add it by pressing 't'.\n"+
 				"Do not draw overlapping ROIs because the area will be counted twice.\n"+
@@ -140,7 +146,11 @@
         setResult("IntDen/Area", i, ratio);
 	    updateResults();
 	}
-	IJ.log("sum_ratio: " + sum_ratio);
+	IJ.log("Fluorescence filename:");
+	IJ.log(fl_filename);
+	IJ.log("Sum of fluorescence intensity divided by pixel area inside the cells mask: ");
+	IJ.log(sum_ratio);
+	
 
 File.makeDirectory(output_dir);
 // Save areas to results.csv
@@ -151,7 +161,7 @@ File.makeDirectory(output_dir);
 
 //Save mask
 	// Create an empty image
-	selectImage("bf_orig");
+	selectImage("bf_nobg");
 	run("Duplicate...", "ignore title=emptyim");
 	run("8-bit");
 	run("Select All");
@@ -170,6 +180,5 @@ File.makeDirectory(output_dir);
 	close();
 
 // Close
-	// close("bf_orig");
 	close("bf_nobg");
 	run("Tile");
