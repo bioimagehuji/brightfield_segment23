@@ -1,4 +1,4 @@
-// Liver Cell Segmentation. Version 4.
+// Liver Cell Segmentation. Version 5.
 // Script description:
 //  This script computes the fluorescence inside cells.
 //  The script accepts a brightfield image and a fluorescence image. 
@@ -9,6 +9,7 @@
 // Output: a sub-fulder with files: mask.png, results.csv, and fluorescence_sum.txt
 //         The Log window shows sum_ratio.
 //
+// Changes in V.5: Fixed to measure all ROIs and not only the selected one.
 // Changes in V.4: Tile. Print sum and file in new lines. Green ROIs.
 // Changes in V.3: Added threshold control. Show segmentation with fluorescence.
 // Changes in V.2: Added line to user dialog box.
