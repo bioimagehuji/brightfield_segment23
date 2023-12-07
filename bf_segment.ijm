@@ -127,10 +127,11 @@
 
 // Statistics
 	open(fl_filename);
-	roiManager("Set Color", "#5000FF00");
-	roiManager("Show All without labels");
 	run("Clear Results");
 	run("Set Measurements...", "area integrated redirect=None decimal=3");
+	roiManager("Deselect");
+	roiManager("Set Color", "#5000FF00");
+	roiManager("Show All with labels");
 	roiManager("Measure");
 	//	close(fl_basename);
 	sum_ratio = 0;
@@ -168,6 +169,7 @@ File.makeDirectory(output_dir);
 	run("Clear", "slice");
 	// Put ROIs on empty image
 	roiManager("deselect");
+	roiManager("Save", output_dir + "/RoiSet.zip");
 	roiManager("Show All without labels");
 	roiManager("Set Fill Color", "white");
 	run("Flatten");
